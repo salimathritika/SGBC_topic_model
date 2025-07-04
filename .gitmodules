@@ -1,0 +1,3 @@
+[submodule "data/PyBioC"]
+	path = data/PyBioC
+	url = https://github.com/2mh/PyBioC.git
