@@ -2,12 +2,17 @@ import requests
 
 # 
 # https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_xml/PMC10275820/ascii
-def get_fulltext(pmcid,yr):
+def get_fulltext(pmcid,outdir=None):
     apiurl='https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_xml/%s/ascii'
     xmltext=requests.get(apiurl % pmcid).text #.json()[0]['documents'][0]
-    if not xmltext.startswith('[Error] : No result can be found.'):
-        with open(f'/data/ftxmls/{yr}/{pmcid}.xml','wt') as fp:
+    if xmltext.startswith('[Error] : No result can be found.'):
+        print('No fulltext found for', pmcid)
+        return None
+    if outdir is not None:
+        with open(f'{outdir}/{pmcid}.xml','wt') as fp:
             fp.write(xmltext)
+    else:
+        return xmltext
 
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
